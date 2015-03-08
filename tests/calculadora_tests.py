@@ -45,7 +45,7 @@ class CalculadoraTests(unittest.TestCase):
         calculadora.adicionar_operacao('-', subtracao)
         self.assertDictEqual({'+': adicao, '-': subtracao}, calculadora.operacoes_disponiveis)
 
-    def test_calcular(self):
+    def test_calcular_integracao(self):
         calculadora = Calculadora()
         adicao = Adicao()
         calculadora.adicionar_operacao('+', adicao)
