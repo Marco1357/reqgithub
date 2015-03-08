@@ -1,5 +1,5 @@
 from unittest import TestCase
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from reqgithub import github
 
 json_str = '''{
@@ -37,22 +37,15 @@ json_str = '''{
 
 
 class ToXMLTests(TestCase):
-    def setUp(self):
-        print('Inicializando')
-
-    def tearDown(self):
-        print('Finalizando')
-
-    def test_sucesso(self):
+    @patch('reqgithub.github.xmltodict')
+    @patch('reqgithub.github.requests')
+    def test_sucesso(self, requests,xmltodict):
         resposta = Mock()
         resposta.text = json_str
-        get = github.requests.get
-        github.requests.get = Mock(return_value=resposta)
+        requests.get = Mock(return_value=resposta)
         xml = github.github_user_to_xml('renzon')
         self.assertTrue(xml.startswith('<?xml version="1.0" encoding="utf-8"?>'))
         github.requests.get.assert_called_once_with('https://api.github.com/users/renzon')
-        github.requests.get = get
 
-    def test_blah(self):
-        # print(github.github_user_to_xml('edimar'))
-        raise NotImplementedError
+    def test_xlah(self):
+        print(github.github_user_to_xml('edimar'))
