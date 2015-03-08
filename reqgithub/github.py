@@ -4,9 +4,13 @@ import xmltodict
 
 xmltodict
 
-print(xmltodict.unparse({'nome': 'Renzo'}))
-resposta = requests.get('https://api.github.com/users/renzon')
-dct = json.loads(resposta.text)
-xml = xmltodict.unparse({'user': dct}, pretty=True, newl='\n', indent='---')
-print(xml)
-print(resposta.text)
+
+def github_user_to_xml(user):
+    resposta = requests.get('https://api.github.com/users/%s' % user)
+    dct = json.loads(resposta.text)
+    xml = xmltodict.unparse({'user': dct}, pretty=True, newl='\n', indent='---')
+    return xml
+
+
+if __name__ == '__main__':
+    github_user_to_xml('renzon')
