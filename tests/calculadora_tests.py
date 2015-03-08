@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import Mock
 
 
 class Calculadora():
@@ -55,6 +56,19 @@ class CalculadoraTests(unittest.TestCase):
         resultado = calculadora.calcular()
         self.assertEqual(3, resultado)
 
+    def test_calcular(self):
+        calculadora = Calculadora()
+        operacao_mock = Mock()
+        operacao_mock.calcular = Mock(return_value='Resultado de execucao do metodo calcular')
+        calculadora.adicionar_operacao('+', operacao_mock)
+        calculadora.entrada = 1
+        calculadora.entrada2 = 2
+        calculadora.sinal = '+'
+
+        resultado = calculadora.calcular()
+        operacao_mock.calcular.assert_called_once_with(1, 2)
+        self.assertEqual('Resultado de execucao do metodo calcular', resultado)
+
     def test_subtracao_operacao(self):
         calculadora = Calculadora()
         subtracao = Subtracao()
@@ -68,7 +82,7 @@ class CalculadoraTests(unittest.TestCase):
 
 class Adicao():
     def calcular(self, entrada, entrada2):
-        return entrada + entrada2
+        return entrada - entrada2
 
 
 class OperacaoTests(unittest.TestCase):

@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import Mock
 
 
 class Email():
@@ -13,22 +14,16 @@ class EnviadorDeMensagem():
     def enviar_mensagens(self):
         return self.canal.enviar()
 
-class CanalMock():
-    def __init__(self):
-        self.enviar_executado = False
-
-    def enviar(self):
-        self.enviar_executado = True
-
 
 class MensagemTests(unittest.TestCase):
     def test_enviar_mensagem(self):
         enviador_de_mensagem = EnviadorDeMensagem()
-        canal_mock = CanalMock()
+        canal_mock = Mock()
         enviador_de_mensagem.canal = canal_mock
         enviador_de_mensagem.enviar_mensagens()
         # Testes vão executar aqui abaixo
-        self.assertTrue(canal_mock.enviar_executado)
+        canal_mock.enviar.assert_called_once_with()
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     unittest.main()
